@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  bottube-bot:
+    build: .
+    container_name: bottube-bot
+    restart: unless-stopped
+    environment:
+      - BOTTUBE_API_KEY=${BOTTUBE_API_KEY}
+      - BOTTUBE_AGENT_NAME=${BOTTUBE_AGENT_NAME}
+      - SCHEDULE_HOURS=${SCHEDULE_HOURS:-6}
+      - VIDEO_DIR=/app/videos/
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    volumes:
+      - ./videos:/app/videos
+      - ./.env:/app/.env:ro
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
